@@ -1,5 +1,6 @@
 import express from 'express';
 import Profile from '../models/profile';
+import avatar from '../resources/getAvatar';
 
 import {
   jsonResponse,
@@ -36,26 +37,48 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newProfile = new Profile(req.body);
+    const { fullName, document, phoneNumber, address } = req.body;
+    const avatarProfile = avatar(fullName);
+
+    const newProfile = new Profile({
+      fullName,
+      document,
+      phoneNumber,
+      address,
+      avatar: avatarProfile,
+    });
     await newProfile.save();
 
     jsonResponse(res, 200, 'Success!!', newProfile.fullName);
   } catch (error) {
+    console.log(error);
     badRequest(res);
   }
 });
 
 router.put('/:id', async (req, res) => {
   try {
-    const newProfile = new Profile(req.body);
+    const { fullName, document, phoneNumber, address } = req.body;
+    const avatarProfile = avatar(fullName);
+
+    const newProfile = new Profile({
+      fullName,
+      document,
+      phoneNumber,
+      address,
+      avatar: avatarProfile,
+    });
 
     const updatedProfile = await Profile.findByIdAndUpdate(req.params.id, {
       fullName: newProfile.fullName,
       document: newProfile.document,
       phoneNumber: newProfile.phoneNumber,
       address: newProfile.address,
+      avatar: newProfile.avatar,
       updatedAt: newProfile.updatedAt,
     });
+
+    console.log('update =>', req.params.id);
 
     if (updatedProfile) {
       jsonResponse(res, 200, 'Success!!', newProfile.fullName);

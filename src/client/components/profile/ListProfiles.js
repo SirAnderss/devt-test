@@ -21,6 +21,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CreateProfile from './CreateProfile';
+import Profile from './Profile';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -47,12 +48,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function DenseTable(props) {
   const classes = useStyles();
-  const [modal, setModal] = useState(false);
-  const [prompt, setPrompt] = React.useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [cardModal, setCardModal] = useState(false);
+  const [prompt, setPrompt] = useState(false);
 
   const closeModal = () => {
+    setEditModal(false);
+    setCardModal(false);
     props.setLocalProfile(null);
-    setModal(false);
   };
 
   const closePrompt = () => {
@@ -60,9 +63,14 @@ export default function DenseTable(props) {
     setPrompt(false);
   };
 
+  const getProfile = data => {
+    props.setLocalProfile(data);
+    setCardModal(true);
+  };
+
   const editProfile = data => {
     props.setLocalProfile(data);
-    setModal(true);
+    setEditModal(true);
   };
 
   const removeProfile = data => {
@@ -102,7 +110,12 @@ export default function DenseTable(props) {
                     <Avatar src={item.avatar} alt={item.fullName} />
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {item.fullName}
+                    <span
+                      className={classes.pointer}
+                      onClick={() => getProfile(item)}
+                    >
+                      {item.fullName}
+                    </span>
                   </TableCell>
                   <TableCell align='right'>{item.document}</TableCell>
                   <TableCell align='right'>{item.phoneNumber}</TableCell>
@@ -128,7 +141,7 @@ export default function DenseTable(props) {
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
         className={classes.modal}
-        open={modal}
+        open={editModal}
         onClose={closeModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -136,7 +149,7 @@ export default function DenseTable(props) {
           timeout: 500,
         }}
       >
-        <Fade in={modal}>
+        <Fade in={editModal}>
           <div className={classes.paper}>
             <Typography variant='h3' component='h4' gutterBottom>
               Actualizar perfil {props.profile ? props.profile.fullName : ''}
@@ -145,6 +158,26 @@ export default function DenseTable(props) {
               setProfile={props.updateProfile}
               profile={props.profile}
             />
+          </div>
+        </Fade>
+      </Modal>
+      <Modal
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
+        className={classes.modal}
+        open={cardModal}
+        onClose={closeModal}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={cardModal}>
+          <div className={classes.paper}>
+            <Typography variant='h3' component='h4' gutterBottom>
+              <Profile profile={props.profile} />
+            </Typography>
           </div>
         </Fade>
       </Modal>

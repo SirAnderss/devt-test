@@ -1,0 +1,33 @@
+{
+  "name": "test-dev",
+  "version": "1.0.0",
+  "description": "CRUD test for interview",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "crud",
+    "test",
+    "dev",
+    "node",
+    "react",
+    "materialize"
+  ],
+  "author": "Andersson Ramirez",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.8",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
+    "@babel/node": "^7.13.13",
+    "@babel/preset-env": "^7.14.1",
+    "nodemon": "^2.0.7"
+  }
+}

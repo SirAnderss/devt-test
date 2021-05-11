@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const URI = 'mongodb://localhost/dev-test';
+const local = dotenv.config();
+
+const URI = `mongodb+srv://mern-test:${local.parsed.MONGO_KEY}@cluster0.emt6b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 mongoose
   .connect(URI, {

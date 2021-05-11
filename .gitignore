@@ -116,5 +116,5 @@ dist
 .pnp.*
 
 # public bundles
-src/public/*.js
+src/public/*.js*
 src/public/*.css
